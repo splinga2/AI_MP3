@@ -27,7 +27,7 @@ public:
     Classifier();
 
     void train(const char*, Class);
-    void doneTraining();
+    void doneTraining(const double);
     Class classify(Sample&);
 
 };
