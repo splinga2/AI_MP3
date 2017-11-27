@@ -60,7 +60,7 @@ int main() {
     puts(YES_TEST);
     classify(YES_TEST, classifier);
 
-    puts(YES_TEST);
+    puts(NO_TEST);
     classify(NO_TEST, classifier);
 
     return 0;

@@ -39,6 +39,8 @@ void Classifier::train(const char *fileName, Class c) {
 
 void Classifier::doneTraining() {
 
+    const double K = 1.0;
+
     std::vector<int> total;
 
     for (int y = 0; y < H; ++y) {
@@ -48,7 +50,8 @@ void Classifier::doneTraining() {
 
             for (int p = 0; p < 2; ++p) {
                 for (int c = 0; c < CLASS_SIZE; ++c) {
-                    total[c] += ++frequencyTables[y][x][p][c];
+                    frequencyTables[y][x][p][c] += K;
+                    total[c] = frequencyTables[y][x][p][c];
                 } // end c
             } // end p
 
