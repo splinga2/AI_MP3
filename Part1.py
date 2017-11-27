@@ -136,13 +136,43 @@ test_labels.close()
 # Normalize classification rates
 for c in range(num_classes):
 	print("Class " + str(c) + ":")
-	print(str(classification_rate[c]) + " correct out of " + str(test_class_num_examples[c]) + "; " + str(100 * classification_rate[c] / test_class_num_examples[c]) + " %\n")
+	print(str(classification_rate[c]) + " correct out of " + str(test_class_num_examples[c]) + "; " + '%7.3f' % (100 * classification_rate[c] / test_class_num_examples[c]) + " %\n")
 	classification_rate[c] /= test_class_num_examples[c]
 
-print("\nTotal correct: ")
-print(str(total_correct) + " out of " + str(num_test_examples) + "; " + str(100 * total_correct / num_test_examples) + " %")
+print("Total correct: ")
+print(str(total_correct) + " out of " + str(num_test_examples) + "; " + str(100 * total_correct / num_test_examples) + " %\n")
 
+# Compute confusion matrix
+confusion_matrix = [[0 for c in range(num_classes)] for r in range(num_classes)]
 
+for index, r in enumerate(true_labels):
+	c = guess_labels[index]
+	confusion_matrix[r][c] += 1
+
+for r in range(num_classes):
+	for c in range(num_classes):
+		confusion_matrix[r][c] /= test_class_num_examples[r]
+
+# Print confusion matrix
+print("Confusion matrix: ")
+
+sys.stdout.write('  ')
+for i in range(num_classes):
+	sys.stdout.write('   ' + str(i) + '   ')
+
+for r in range(num_classes):
+	sys.stdout.write('\n' + str(r) + ':')
+	for c in range(num_classes):
+		sys.stdout.write('%7.3f' % (100*confusion_matrix[r][c]))
+
+print('\n')
+
+# Print max and min posterior probabilities
+for c in range(num_classes):
+	print("Highest poster probability for class " + str(c) + ": ")
+	print("\tExample " + str(class_max_probabilities[c][0]) + " with log probability " + '%7.3f' % class_max_probabilities[c][1])
+	print("Lowest poster probability for class " + str(c) + ": ")
+	print("\tExample " + str(class_min_probabilities[c][0]) + " with log probability " + '%7.3f' % class_min_probabilities[c][1] + "\n")
 
 # Write to output file
 '''output_name = 'TrainingResults_' + sys.argv[1] + '.txt'
