@@ -43,7 +43,7 @@ void classify(const char *TEST_FILENAME, Classifier &classifier) {
     }
 
     printf("yes: %d\n", yes);
-    printf("no : %d\n", no);
+    printf("no : %d\n\n", no);
 
     fclose(test);
 
@@ -57,7 +57,10 @@ int main() {
     classifier.train(NO_TRAIN, Class::NO);
     classifier.doneTraining();
 
+    puts(YES_TEST);
     classify(YES_TEST, classifier);
+
+    puts(YES_TEST);
     classify(NO_TEST, classifier);
 
     return 0;
