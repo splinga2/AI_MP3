@@ -1,5 +1,7 @@
 import sys
 import math
+import matplotlib.pyplot as plt
+import numpy as np
 
 example_width = 0
 example_height = 0
@@ -173,6 +175,53 @@ for c in range(num_classes):
 	print("\tExample " + str(class_max_probabilities[c][0]) + " with log probability " + '%7.3f' % class_max_probabilities[c][1])
 	print("Lowest poster probability for class " + str(c) + ": ")
 	print("\tExample " + str(class_min_probabilities[c][0]) + " with log probability " + '%7.3f' % class_min_probabilities[c][1] + "\n")
+
+# Create odds ratios
+max_ratios = [0]*4
+max_pairs = [(4,9), (8,3), (7,9), (5, 3)]
+'''
+for c in range(num_classes):
+	for r in range(num_classes):
+		if(c != r):
+			for i in range(4):
+				if(confusion_matrix[r][c] > max_ratios[i]):
+					for j in range(3, i+1, -1):
+						max_ratios[j] = max_ratios[j-1]
+						max_pairs[j] = max_pairs[j-1]
+					max_ratios[i] = confusion_matrix[r][c]
+					max_pairs[i] = (r,c)
+					break
+'''
+
+# Output maps
+odds = [[0 for i in range(example_width)] for j in range(example_height)]
+for r, c in max_pairs:
+	filename = "graphs/Class_" + str(r) + "_likelihoods"
+	a = np.array(class_features[r])
+	fig, axis = plt.subplots()
+	heatmap = axis.pcolor(a)
+	plt.colorbar(heatmap)
+	plt.imshow(a)
+	plt.show()
+
+	filename = "graphs/Class_" + str(c) + "_likelihoods"
+	a = np.array(class_features[c])
+	fig, axis = plt.subplots()
+	heatmap = axis.pcolor(a)
+	plt.colorbar(heatmap)
+	plt.imshow(a)
+	plt.show()
+
+	filename = "graphs/OddsRatio_" + str(r) + "_" + str(c)
+	for j in range(example_height):
+		for i in range(example_width):
+			odds[j][i] = class_features[r][j][i] - class_features[c][j][i]
+	a = np.array(odds)
+	fig, axis = plt.subplots()
+	heatmap = axis.pcolor(a)
+	plt.colorbar(heatmap)
+	plt.imshow(a)
+	plt.show()
 
 # Write to output file
 '''output_name = 'TrainingResults_' + sys.argv[1] + '.txt'
