@@ -197,30 +197,27 @@ for c in range(num_classes):
 odds = [[0 for i in range(example_width)] for j in range(example_height)]
 for r, c in max_pairs:
 	filename = "graphs/Class_" + str(r) + "_likelihoods"
-	a = np.array(class_features[r])
+	a = np.log10(class_features[r])
 	fig, axis = plt.subplots()
-	heatmap = axis.pcolor(a)
-	plt.colorbar(heatmap)
 	plt.imshow(a)
+	plt.colorbar()
 	plt.show()
 
 	filename = "graphs/Class_" + str(c) + "_likelihoods"
-	a = np.array(class_features[c])
+	b = np.log10(class_features[c])
 	fig, axis = plt.subplots()
-	heatmap = axis.pcolor(a)
-	plt.colorbar(heatmap)
-	plt.imshow(a)
+	plt.imshow(b)
+	plt.colorbar()
 	plt.show()
 
 	filename = "graphs/OddsRatio_" + str(r) + "_" + str(c)
 	for j in range(example_height):
 		for i in range(example_width):
-			odds[j][i] = class_features[r][j][i] - class_features[c][j][i]
+			odds[j][i] = a[j][i] - b[j][i]
 	a = np.array(odds)
 	fig, axis = plt.subplots()
-	heatmap = axis.pcolor(a)
-	plt.colorbar(heatmap)
 	plt.imshow(a)
+	plt.colorbar()
 	plt.show()
 
 # Write to output file
